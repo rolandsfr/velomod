@@ -1,3 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap");
+
+@font-face {
+  font-family: "Neutral";
+  src: url("../styles/fonts/NeutralFace.otf"), format("truetype");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Neutral";
+  src: url("../styles/fonts/NeutralFace-Bold.otf"), format("truetype");
+  font-weight: bold;
+}
+
+* {
+  font-family: "Open Sans";
+}
+
 html,
 body {
   padding: 0;
