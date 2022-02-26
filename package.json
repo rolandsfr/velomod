@@ -9,8 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.0.0",
+    "@types/country-flag-icons": "^1.2.0",
+    "@types/i18n": "^0.13.2",
+    "@types/react-fontawesome": "^1.6.5",
     "@types/styled-components": "^5.1.23",
+    "country-flag-icons": "^1.4.21",
     "framer-motion": "^6.2.8",
+    "i18n": "^0.14.1",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",

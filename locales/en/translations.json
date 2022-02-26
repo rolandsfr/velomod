@@ -1,0 +1,8 @@
+{
+  "navigation": ["Home", "Products", "About us", "Subscribe"],
+  "hero": {
+    "subtitle": "Your bike has never been this",
+    "title": "Upgraded",
+    "cta": "See the offer"
+  }
+}
