@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import styled from "styled-components";
 import Head from "next/head";
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
 
 import Navigation from "../layout/Navigation";
 import Hero from "../layout/Hero";
@@ -14,13 +14,40 @@ import { MutableRefObject } from "react";
 
 const navState: {
   ref: null | MutableRefObject<null | HTMLDivElement>;
-  setRef: (ref: MutableRefObject<HTMLDivElement | null>) => void;
+  active: number;
+  dispatch: React.Dispatch<{
+    type: string;
+    payload: any;
+  }> | null;
 } = {
   ref: null,
-  setRef: (ref: MutableRefObject<HTMLDivElement | null>) => {
-    navState.ref = ref;
-  },
+  active: 0,
+  dispatch: null,
 };
+
+const reducer = (
+  state: typeof navState,
+  action: {
+    type: string;
+    payload: any;
+  }
+): typeof navState => {
+  switch (action.type) {
+    case "SET_ACTIVE":
+      return {
+        ...state,
+        active: action.payload,
+      };
+    case "SET_NAV_REF":
+      return {
+        ...state,
+        ref: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
 const NavContext = createContext(navState);
 
 const Wrapper = styled.div``;
@@ -39,14 +66,30 @@ const Home: NextPage = () => {
   }
   const points = translatedDisplayPoints.map((point, index) => {
     return (
-      <li key={index} ref={sectionRefs[index]}>
+      <li
+        key={index}
+        onClick={() =>
+          dispatch({
+            type: "SET_ACTIVE",
+            payload: index,
+          })
+        }
+        ref={sectionRefs[index]}
+      >
         {point}
       </li>
     );
   });
 
+  const [state, dispatch] = useReducer(reducer, navState);
+
   return (
-    <NavContext.Provider value={navState}>
+    <NavContext.Provider
+      value={{
+        ...state,
+        dispatch,
+      }}
+    >
       <Head>
         <title>Velomod</title>
         <meta
