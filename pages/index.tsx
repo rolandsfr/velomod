@@ -62,10 +62,10 @@ const Home: NextPage = () => {
 
   const sectionRefs: MutableRefObject<any>[] = [];
   //  temporarily fill in the array
-  for (let i = 0; i < translatedDisplayPoints.length; i++) {
-    const ref = useRef();
-    sectionRefs.push(ref);
-  }
+  // for (let i = 0; i < translatedDisplayPoints.length; i++) {
+  //   const ref = useRef();
+  //   sectionRefs.push(ref);
+  // }
   const points = translatedDisplayPoints.map((point, index) => {
     return (
       <li
@@ -76,7 +76,7 @@ const Home: NextPage = () => {
             payload: index,
           })
         }
-        ref={sectionRefs[index]}
+        // ref={sectionRefs[index]}
       >
         {point}
       </li>
