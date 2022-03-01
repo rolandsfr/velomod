@@ -7,6 +7,8 @@ import { createContext, useReducer } from "react";
 
 import Navigation from "../layout/Navigation";
 import Hero from "../layout/Hero";
+import Showcase from "../layout/Showcase";
+import Team from "../layout/Team";
 
 import localizedEn from "./../locales/en/translations.json";
 import localizedLv from "./../locales/lv/translations.json";
@@ -104,6 +106,8 @@ const Home: NextPage = () => {
       <Wrapper>
         <Navigation points={points} />
         <Hero />
+        <Showcase />
+        <Team />
       </Wrapper>
     </NavContext.Provider>
   );

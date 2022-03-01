@@ -4,5 +4,41 @@
     "subtitle": "Tavs ritenis nekad nav bijis tik",
     "title": "Uzlabots",
     "cta": "Apskatīt piedāvājumu"
-  }
+  },
+  "scroll": "Doties uz augšu",
+  "showcase": {
+    "title": "Zem rekonkstrukcijas",
+    "subtitle": "Drīzumā šeit būs pieejama interkatīva produkta 3D modeļa apskate.",
+    "cta": "Būt lietas kursā"
+  },
+  "team": [
+    {
+      "name": "Andrejs Rudzītis",
+      "occupation": "Uzņēmuma vadītājs",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Enim ut sem viverra aliquet eget sit amet. Amet mattis vulputate enim nulla aliquet porttitor lacus luctus. Volutpat odio facilisis mauris sit amet massa.",
+      "instagram": "https://instagram.com/rudzitys",
+      "image": "andrejs.jpg"
+    },
+    {
+      "name": "Jānis Riekstiņš",
+      "occupation": "Produktu dizainers",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Enim ut sem viverra aliquet eget sit amet. Amet mattis vulputate enim nulla aliquet porttitor lacus luctus. Volutpat odio facilisis mauris sit amet massa.",
+      "instagram": "https://instagram.com/janis.junis",
+      "image": "janis.jpg"
+    },
+    {
+      "name": "Rolands Frīdemanis",
+      "occupation": "Brandinga & mārketinga menedžeris",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Enim ut sem viverra aliquet eget sit amet. Amet mattis vulputate enim nulla aliquet porttitor lacus luctus. Volutpat odio facilisis mauris sit amet massa.",
+      "instagram": "https://instagram.com/rolyuhh",
+      "image": "rolands.jpg"
+    },
+    {
+      "name": "Henrijs M. Gals",
+      "occupation": "Ražošanas speciālists",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Enim ut sem viverra aliquet eget sit amet. Amet mattis vulputate enim nulla aliquet porttitor lacus luctus. Volutpat odio facilisis mauris sit amet massa.",
+      "instagram": "https://instagram.com/henr1js",
+      "image": "henri.jpg"
+    }
+  ]
 }

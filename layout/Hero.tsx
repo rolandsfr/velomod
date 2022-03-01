@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useLocale } from "../hooks/useLocale";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Cta from "../components/Cta";
 import { useContext } from "react";
 import { NavContext } from "../pages";
 import { useSizer } from "../hooks/useSizer";
@@ -20,43 +21,6 @@ const Wrapper = styled.div`
 
   .content {
     overflow: hidden;
-  }
-
-  .cta {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    position: relative;
-    font-weight: bold;
-    display: inline-flex;
-    cursor: pointer;
-
-    svg {
-      width: 0.7em;
-      transition: 0.3s all;
-    }
-
-    &::before {
-      content: "";
-      transition: 0.3s all;
-      position: absolute;
-      width: 50%;
-      height: 0.5em;
-      z-index: -1;
-      background-color: #d04cff;
-      left: 0;
-      bottom: 0;
-    }
-
-    &:hover {
-      &:before {
-        width: 65%;
-      }
-
-      svg {
-        margin-left: 0.2em;
-      }
-    }
   }
 
   .titles {
@@ -239,10 +203,7 @@ const Hero: NextPage = () => {
             <h2>{localized.hero.subtitle}</h2>
             <h1>{localized.hero.title}</h1>
           </div>
-          <span className="cta">
-            {localized.hero.cta}
-            <FontAwesomeIcon icon={faArrowRight} />
-          </span>
+          <Cta>{localized.hero.cta}</Cta>
         </div>
       </Container>
     </Wrapper>

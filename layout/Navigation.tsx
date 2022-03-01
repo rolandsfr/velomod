@@ -8,9 +8,10 @@ import Link from "next/link";
 import getUnicodeFlagIcon from "country-flag-icons/unicode";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { AnimatePresence, motion } from "framer-motion";
+import { faBars, faTimes, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { useSizer } from "../hooks/useSizer";
+import { useLocale } from "../hooks/useLocale";
 
 const BlurBackdrop = styled(motion.div)`
   width: 100vw;
@@ -73,6 +74,14 @@ const Nav = styled(motion.nav)`
       display: none;
     }
   }
+
+  .scroll-to-top {
+    display: none;
+  }
+`;
+
+const NavWrapper = styled(motion.div)`
+  padding: 4em;
 `;
 
 const Wrapper = styled.div`
@@ -81,9 +90,10 @@ const Wrapper = styled.div`
   top: 0;
   right: 0;
   z-index: 10000;
+  /* TODO: Remove after done with team section */
+  /* display: none; */
 
   header {
-    padding: 4em 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -117,6 +127,7 @@ const Wrapper = styled.div`
         height: 100vh;
         width: 300px;
         align-items: flex-start;
+        justify-content: space-between;
 
         ul {
           flex-direction: column;
@@ -145,15 +156,39 @@ const Wrapper = styled.div`
       }
 
       .languages {
-        padding: 3em 7em;
-        margin-left: 0;
-        position: absolute;
+        margin: 3em 7em;
         bottom: 5em;
+      }
+
+      .scroll-to-top {
+        display: flex;
+        margin: 3em 7em;
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5em;
+        margin-top: -1em;
+
+        svg {
+          width: 1.1em;
+          margin-left: 1.4em;
+        }
       }
 
       .menu {
         display: block !important;
       }
+    }
+  }
+
+  @media only screen and (max-width: 1024px) and (max-height: 425px) {
+    .additional-nav {
+      position: absolute;
+      top: 3em;
+      left: -0.7em;
+    }
+
+    ul {
+      margin-top: 15em !important;
     }
   }
 `;
@@ -166,7 +201,10 @@ const Navigation: React.FC<NavigationProps> = ({ points }) => {
   const navRef = useRef<HTMLDivElement | null>(null);
   const context = useContext(NavContext);
   const sizer = useSizer();
+  const localized = useLocale();
   const { locale } = useRouter();
+  const controls = useAnimation();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -186,111 +224,151 @@ const Navigation: React.FC<NavigationProps> = ({ points }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const checkScroll = () => {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+
+      if (winScroll > 100) {
+        // add bg to nav bar
+        controls.start({
+          background: "rgba(240, 240, 240, 0.6)",
+          backdropFilter: "blur(25px)",
+          transition: { duration: 0.7 },
+        });
+      } else {
+        controls.start({
+          background: "rgba(255, 255, 255, 0)",
+          backdropFilter: "blur(0px)",
+        });
+      }
+    };
+
+    document.addEventListener("scroll", checkScroll);
+
+    return () => {
+      document.removeEventListener("scroll", checkScroll);
+    };
+  }, []);
+
   return (
     <Wrapper>
-      <Container ref={navRef}>
-        <AnimatePresence>
-          {sidebarOpen && sizer.w < 1024 && (
-            <BlurBackdrop
-              onClick={(e) => {
-                e.preventDefault();
-                setSidebarOpen(false);
-              }}
-              initial={{
-                backdropFilter: "blur(0px)",
-                background: "rgba(0, 0, 0, 0)",
-              }}
-              animate={{
-                backdropFilter: "blur(10px)",
-                background: "rgba(0, 0, 0, 0.5)",
-              }}
-              exit={{
-                backdropFilter: "blur(0px)",
-                background: "rgba(0, 0, 0, 0)",
-              }}
-            />
-          )}
-        </AnimatePresence>
-        <header>
-          <div className="logo">
-            <Image src={"/logo.svg"} width="80" height="30"></Image>
-            <span className="logotype">Velomod</span>
-          </div>
-          <AnimatePresence exitBeforeEnter={true}>
-            {sidebarOpen && (
-              <Nav
+      <NavWrapper animate={controls}>
+        <Container ref={navRef}>
+          <AnimatePresence>
+            {sidebarOpen && sizer.w < 1024 && (
+              <BlurBackdrop
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSidebarOpen(false);
+                }}
                 initial={{
-                  right: -300,
+                  backdropFilter: "blur(0px)",
+                  background: "rgba(0, 0, 0, 0)",
                 }}
                 animate={{
-                  right: 0,
+                  backdropFilter: "blur(10px)",
+                  background: "rgba(0, 0, 0, 0.5)",
                 }}
                 exit={{
-                  right: -300,
-                  transition: { duration: 0.3 },
+                  backdropFilter: "blur(0px)",
+                  background: "rgba(0, 0, 0, 0)",
                 }}
-              >
-                <ul>
-                  {points.map((point, index) => {
-                    if (index === context.active) {
-                      return (
-                        <span key={index} className="active-point">
-                          {point}
-                        </span>
-                      );
-                    }
-
-                    return point;
-                  })}
-                </ul>
-                <div className="languages">
-                  <Link href="/" locale="lv">
-                    <div className="flag">
-                      <span className="icon">{getUnicodeFlagIcon("LV")}</span>
-                      <span
-                        style={{
-                          fontWeight: locale == "lv" ? "bold" : "normal",
-                        }}
-                        className="flag-name"
-                      >
-                        LV
-                      </span>
-                    </div>
-                  </Link>
-                  <Link href="/" locale="en">
-                    <div className="flag">
-                      <span className="icon">{getUnicodeFlagIcon("US")}</span>
-                      <span
-                        style={{
-                          fontWeight: locale == "en" ? "bold" : "normal",
-                        }}
-                        className="flag-name"
-                      >
-                        EN
-                      </span>
-                    </div>
-                  </Link>
-                </div>
-
-                <div
-                  className="close-modal"
-                  onClick={() => setSidebarOpen(false)}
-                >
-                  <FontAwesomeIcon icon={faTimes} />
-                </div>
-              </Nav>
+              />
             )}
           </AnimatePresence>
-          <div
-            className="menu"
-            onClick={() => {
-              setSidebarOpen(true);
-            }}
-          >
-            <FontAwesomeIcon icon={faBars} />
-          </div>
-        </header>
-      </Container>
+          <header>
+            <div className="logo">
+              <Image src={"/logo.svg"} width="80" height="30"></Image>
+              <span className="logotype">Velomod</span>
+            </div>
+            <AnimatePresence exitBeforeEnter={true}>
+              {sidebarOpen && (
+                <Nav
+                  initial={{
+                    right: -300,
+                  }}
+                  animate={{
+                    right: 0,
+                  }}
+                  exit={{
+                    right: -300,
+                    transition: { duration: 0.3 },
+                  }}
+                >
+                  <ul>
+                    {points.map((point, index) => {
+                      if (index === context.active) {
+                        return (
+                          <span key={index} className="active-point">
+                            {point}
+                          </span>
+                        );
+                      }
+
+                      return point;
+                    })}
+                  </ul>
+
+                  <div className="additional-nav">
+                    <div className="languages">
+                      <Link href="/" locale="lv">
+                        <div className="flag">
+                          <span className="icon">
+                            {getUnicodeFlagIcon("LV")}
+                          </span>
+                          <span
+                            style={{
+                              fontWeight: locale == "lv" ? "bold" : "normal",
+                            }}
+                            className="flag-name"
+                          >
+                            LV
+                          </span>
+                        </div>
+                      </Link>
+                      <Link href="/" locale="en">
+                        <div className="flag">
+                          <span className="icon">
+                            {getUnicodeFlagIcon("US")}
+                          </span>
+                          <span
+                            style={{
+                              fontWeight: locale == "en" ? "bold" : "normal",
+                            }}
+                            className="flag-name"
+                          >
+                            EN
+                          </span>
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="scroll-to-top">
+                      <span>{localized.scroll}</span>
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    </div>
+                  </div>
+
+                  <div
+                    className="close-modal"
+                    onClick={() => setSidebarOpen(false)}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </div>
+                </Nav>
+              )}
+            </AnimatePresence>
+            <div
+              className="menu"
+              onClick={() => {
+                setSidebarOpen(true);
+              }}
+            >
+              <FontAwesomeIcon icon={faBars} />
+            </div>
+          </header>
+        </Container>
+      </NavWrapper>
     </Wrapper>
   );
 };
